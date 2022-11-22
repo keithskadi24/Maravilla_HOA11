@@ -1,0 +1,31 @@
+  - name: Docker Installation
+    apt:
+      name: docker.io
+
+  - name: Adding Docker group to the current user
+    shell: |
+      usermod -aG docker kdm
+
+  - name: Docker image of Ubuntu
+    shell: |
+      docker run ubuntu
+
+  - name: Dockerfile cloning to servers
+    copy:
+      src: ~/Maravilla_HOA11/docker
+      dest: /home/kdm
+      owner: root
+      group: root
+      mode: 0644
+
+  - name: Building Dockerfile
+    shell: |
+      cd docker
+      docker build -t docker:1.1 .
+
+  - name: Checking Docker Images
+    shell: 'docker images'
+    register: command_output
+
+  - debug:
+           var: command_output.stdout_lines
